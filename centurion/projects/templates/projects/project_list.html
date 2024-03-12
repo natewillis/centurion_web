@@ -1,0 +1,14 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+  <h2>Projects</h2>
+  <a href="{% url 'project_create' %}">Create New Project</a>
+  <ul>
+    {% for project in projects %}
+      <li>
+        {{ project.name }} - <a href="{% url 'project_update' project.pk %}">Edit</a> | 
+        <a href="{% url 'project_delete' project.pk %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
