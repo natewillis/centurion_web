@@ -1,13 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Project
-from .forms import ProjectForm
-
-
-class ProjectListView(ListView):
-    model = Project
-    context_object_name = 'projects'
-    template_name = 'projects/project_list.html'
+from .models import Project, Task
+from .forms import ProjectForm, TaskForm
 
 
 class ProjectListView(ListView):
@@ -34,3 +28,29 @@ class ProjectDeleteView(DeleteView):
     model = Project
     template_name = 'projects/project_confirm_delete.html'
     success_url = reverse_lazy('project_list')
+
+
+class TaskListView(ListView):
+    model = Task
+    context_object_name = 'tasks'
+    template_name = 'tasks/task_list.html'
+
+
+class TaskCreateView(CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'projects/task_form.html'
+    success_url = reverse_lazy('task_list')    
+
+
+class TaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'projects/task_form.html'
+    success_url = reverse_lazy('task_list')
+
+
+class TaskDeleteView(DeleteView):
+    model = Task
+    template_name = 'projects/task_confirm_delete.html'
+    success_url = reverse_lazy('task_list')
