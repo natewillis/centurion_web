@@ -23,8 +23,6 @@
         object-fit: contain;
     }
 
-    
-
     .links {
         margin-top: 20px;
         display: flex;
@@ -38,6 +36,13 @@
         font-size: 1.2em;
     }
 
+    .app-title {
+        font-weight: bold;
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+    
+
 {% endblock %}
 
 {% block content %}
@@ -46,7 +51,7 @@
     <img src="/static/logo_nobg.webp" alt="Centurion Logo">
     <div class="links">
         <a href="{% url 'doc_page_view' page_name='project_management.html' %}">Telework Plan</a>
-        <a href="{% url '' %}">Project Management</a>
+        <a href="{% url 'project_list' %}">Project Management</a>
     </div>
 </div>
 {% endblock %}

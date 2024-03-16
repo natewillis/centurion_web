@@ -52,16 +52,11 @@
 	top: 30px;
 }
 
-.small-bottom-spacing{
-	margin-bottom: 10px;
-}
-
-.app-title {
-	font-weight: bold;
-	font-size: 2em;
-	margin-bottom: 20px;
-}
-
 .sticky-footer{
 	bottom: 0px;
+}
+
+/* Common CSS - forms*/
+input, textarea, select {
+	background-color: var(--submain);
 }

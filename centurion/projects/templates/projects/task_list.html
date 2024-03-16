@@ -1,3 +1,6 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
 <h2>Task List</h2>
 <a href="{% url 'task_create' %}">Create New Task</a>
 <ul>
@@ -11,3 +14,4 @@
         <li>No tasks available.</li>
     {% endfor %}
 </ul>
+{% endblock %}
