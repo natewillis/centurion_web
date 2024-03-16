@@ -11,9 +11,10 @@
     </style>
 </head>
 <body class="main-background" style="margin: 20px;">
-    <p class="classification-banner sticky-top-header"> Unnclassified Content Only </p>
-    <p class="development-banner small-bottom-spacing sticky-bottom-header">Deployment: development</p>
+    <p class="thin-banner classification-banner sticky-top-header"> Unnclassified Content Only </p>
+    <p class="thin-banner development-banner sticky-bottom-header">Deployment: development</p>
     {% block content %}{% endblock %}
     {{ generic_html|safe }}
+    <p class="thin-banner classification-banner sticky-footer"> Unnclassified Content Only </p>
 </body>
 </html>
