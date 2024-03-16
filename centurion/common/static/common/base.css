@@ -18,6 +18,7 @@
 	--maintext: white;
 }
 
+/* Base template CSS */
 .main-background{
 	background-color: var(--main);
 }
