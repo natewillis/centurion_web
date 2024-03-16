@@ -1,0 +1,52 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block extra_style %}
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+
+    /* Center the image container */
+    .image-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    /* Set the image size to take up most of the page, while maintaining its aspect ratio */
+    img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+
+    
+
+    .links {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .links a {
+        text-decoration: none;
+        margin: 5px;
+        font-size: 1.2em;
+    }
+
+{% endblock %}
+
+{% block content %}
+<div class="image-container">
+    <div class="app-title">CENTURION</div>
+    <img src="/static/logo_nobg.webp" alt="Centered WebP Image">
+    <div class="links">
+        <a href="{% url 'doc_page_view' page_name='project_management.html' %}">Telework Plan</a>
+        <a href="/project-management">Project Management</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,1 +1,19 @@
-{% block content %}{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management Plan</title>
+    <link rel="stylesheet" href="/static/common/base.css"></link>
+    <style>
+    {% block extra_style %}{% endblock %}
+    </style>
+</head>
+<body class="main-background" style="margin: 20px;">
+    <p class="classification-banner sticky-top-header"> Unnclassified Content Only </p>
+    <p class="development-banner small-bottom-spacing sticky-bottom-header">Deployment: development</p>
+    {% block content %}{% endblock %}
+    {{ generic_html|safe }}
+</body>
+</html>

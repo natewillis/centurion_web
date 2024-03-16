@@ -1,0 +1,67 @@
+* {
+	font-family: "Calibri";
+	color: var(--maintext);
+}
+
+:root{
+
+	/* Blue */
+	--dark-blue:#243F50;
+	--light-blue:#4D6376;
+
+	/* Green */
+	--midnight-green:#07393C;
+
+	/* Application Colors */
+	--main: var(--dark-blue);
+	--submain: var(--light-blue);
+	--maintext: white;
+}
+
+.main-background{
+	background-color: var(--main);
+}
+
+.classification-banner{
+	background-color: green;
+	color: white;
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.development-banner{
+	background-color: #14ff14;
+	color: black;
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.sticky-top-header{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 30px;
+	width: 100%;
+	margin:0px;
+}
+
+.sticky-bottom-header{
+	position: fixed;
+	top: 30px;
+	left: 0px;
+	height: 30px;
+	width: 100%;
+	margin: 0px;
+}
+
+.small-bottom-spacing{
+	margin-bottom: 10px;
+}
+
+.app-title {
+	font-weight: bold;
+	font-size: 2em;
+	margin-bottom: 20px;
+}
