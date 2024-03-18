@@ -5,16 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Management Plan</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link rel="stylesheet" href="/static/common/base.css"></link>
     <style>
     {% block extra_style %}{% endblock %}
     </style>
 </head>
 <body class="main-background" style="margin: 20px;">
+
+    <!-- Classification/deployment banner -->
     <p class="thin-banner classification-banner sticky-top-header"> Unnclassified Content Only </p>
-    <p class="thin-banner development-banner sticky-bottom-header">Deployment: development</p>
+    <p class="thin-banner deployment-banner sticky-bottom-header">Deployment: development</p>
+    <!-- End of classification/deployment banner -->
+
+    <!-- Top Navigation Bar -->
+    <div class="topnav">
+        <a href="{% url 'homepage' %}">Home</a>
+        <a href="{% url 'project_list' %}">Project Management</a>
+    </div>
+    <!-- End of Top Navigation Bar -->
+
+    <!-- Either template or html doc page -->
     {% block content %}{% endblock %}
     {{ generic_html|safe }}
+    <!-- End of template or html doc page -->
+
+    <!-- Classification/deployment banner -->
     <p class="thin-banner classification-banner sticky-footer"> Unnclassified Content Only </p>
+    <!-- End of classification/deployment banner -->
 </body>
 </html>

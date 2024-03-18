@@ -39,7 +39,7 @@
 	color: white;
 }
 
-.development-banner{
+.deployment-banner{
 	background-color: #14ff14;
 	color: black;
 }
@@ -54,6 +54,35 @@
 
 .sticky-footer{
 	bottom: 0px;
+}
+
+.topnav {
+    background-color: var(--main);
+    overflow: hidden;
+	position: fixed;
+	top: 60px;
+	left: 0px;
+	width: 100%;
+	border-bottom: 1px solid white;
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+body {
+	margin: 20px;
+	padding-top: 120px;
 }
 
 /* Common CSS - forms*/
