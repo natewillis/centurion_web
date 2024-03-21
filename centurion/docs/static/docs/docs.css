@@ -1,0 +1,13 @@
+.code-block {
+    background-color: #1e1e1e; /* Dark grey background */
+    color: #8ec07c;              /* Greenish text color */
+    font-family: monospace;   /* Monospaced font */
+    padding: 10px;            /* Padding around the text */
+    white-space: pre;         /* Preserve whitespace and formatting */
+    border: 1px solid #ddd;   /* Optional: border around the code block */
+    border-radius: 4px;       /* Optional: rounded corners */
+}
+
+.code-block .comment {
+    color: #7c7c7c; /* Gray color for comments */
+}

@@ -1,11 +1,11 @@
 from centurion.settings.common import *
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'centurion', 
         'USER': 'postgres',
         'PASSWORD': env("DB_PASSWORD"),

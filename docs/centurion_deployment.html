@@ -1,0 +1,46 @@
+<h1>Centurion Deployment</h1>
+
+<h2>Create New User</h2>
+<p>The first step in deploying a Django application on a DigitalOcean droplet running Rocky Linux is to set up a non-root user with sudo privileges for security purposes. Here's how you can do it (in your bash terminal):</p>
+<div class="code-block">
+    adduser username  <span class="comment">#Create new user - centurion</span>
+    passwd username  <span class="comment">#Set a Password for the New User - 1qaz!QAZ2wsx@WSX</span>
+    usermod -aG wheel username  <span class="comment">#Add the New User to the `wheel` Group for Sudo Privileges</span>
+    su - username <span class="comment">#Switch to the New User</span>
+</div>
+<p>After creating a non-root user, you can proceed with the other steps of the deployment, such as setting up a Python environment, installing dependencies, configuring your Django project, setting up a web server (e.g., Nginx), and a database (e.g., PostgreSQL).</p>
+
+<h2>Note before installing anything</h2>
+<p>We’re going to have to do a lot of leg work getting the right repos setup inside our environment.  Anything installed is going to have us have to download whole rpm repos and create our own clones somewhere on the machine. I’ve done this before, but its not easy.  Lets hope Kennon has a CENTOS or RHEL machine hooked up to the internet and we might have an easier time of it.  Further notes on this subject will be handled here but don’t just go rushing into the install because they WILL fail in ways you don’t like.</p>
+
+<h2>Install PostGIS</h2>
+<p>To set up PostGIS on Rocky Linux, you will first need to install PostgreSQL and then add the PostGIS extension. Here are the steps from <a href="https://www.postgresql.org/download/linux/redhat/">https://www.postgresql.org/download/linux/redhat/</a> to be completed in your bash terminal. (Note, rpms for postgis and dependencies outside of codeready can be downloaded  from <a href="https://download.postgresql.org/pub/repos/yum/">https://download.postgresql.org/pub/repos/yum/</a> and follow the links to your specific postgres, rhel, and architecture, create a local repo from them and you should have)</p>
+<div class="code-block">
+    sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    sudo dnf -qy module disable postgresql
+    sudo dnf install -y postgresql16-server
+    sudo /usr/pgsql-16/bin/postgresql-16-setup initdb
+    sudo systemctl enable postgresql-16
+    sudo systemctl start postgresql-16
+</div>
+<p>With that you should have a working postgres installation (we have one already in our VMs from J6? maybe?)  Next you install your PostGIS</p>
+<div class="code-block">
+    <span class="comment"># Install EPEL repo RPM:</span>
+    dnf -y install epel-release
+    
+    <span class="comment"># Pay attention to what OS for these next few, some are for RHEL, some are CentOS, some are Rocky and if you chose Almalinux after everything, good luck.</span>
+    
+    <span class="comment"># Enable PowerTools repo (required for some of the dependencies in CentOS):</span>
+    dnf -y config-manager --set-enabled PowerTools
+    
+    <span class="comment"># you might need to do this instead for the (Rocky)</span>
+    dnf config-manager --enable crb
+    
+    <span class="comment"># for Rocky 8 and above might need to do this as well</span>
+    crb enable
+    <span class="comment"># For RHEL the codeready linux builder repository needs to be enabled</span>
+    subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms <span class="comment">#Or whatever yours is called, list them to find out, john or kennon can burn this to a disc for us</span>
+    <span class="comment"># Now, you can finally install PostGIS Select the right PostGIS and PostgreSQL versions</span>
+    dnf -y install postgis34_16
+    systemctl restart postgresql-16
+</div>

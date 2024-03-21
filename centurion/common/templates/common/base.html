@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Management Plan</title>
+    <title>{{ Centurion }}</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link rel="stylesheet" href="/static/common/base.css"></link>
+    {{ extra_style_sheets|safe }}
     <style>
     {% block extra_style %}{% endblock %}
     </style>
