@@ -6,6 +6,7 @@
     white-space: pre;         /* Preserve whitespace and formatting */
     border: 1px solid #ddd;   /* Optional: border around the code block */
     border-radius: 4px;       /* Optional: rounded corners */
+    margin: 5px;
 }
 
 .code-block .comment {

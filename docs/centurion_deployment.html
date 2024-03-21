@@ -38,9 +38,57 @@
     
     <span class="comment"># for Rocky 8 and above might need to do this as well</span>
     crb enable
+    
     <span class="comment"># For RHEL the codeready linux builder repository needs to be enabled</span>
     subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms <span class="comment">#Or whatever yours is called, list them to find out, john or kennon can burn this to a disc for us</span>
+    
     <span class="comment"># Now, you can finally install PostGIS Select the right PostGIS and PostgreSQL versions</span>
     dnf -y install postgis34_16
     systemctl restart postgresql-16
+    sudo su - postgres
+    
+    <span class="comment"># To enter command line mode in database</span>
+    psql 
+
+    <span class="comment"># Now you're in a terminal inside the database, create a dedicated user for reading/writing</span>
+    CREATE USER geodjango PASSWORD 'my_passwd';
+
+    <span class="comment"># Now you're in a terminal inside the database, create a dedicated user for reading/writing</span>
+    CREATE DATABASE geodjango OWNER geodjango;
+    psql -d myspatialdb -c "SELECT PostGIS_Version();" <span class="comment"> #Validate that setup worked</span>
+    exit
+
+</div>
+
+<h2>Install Apache</h2>
+<div class="code-block">
+sudo dnf install httpd httpd-devel -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo systemctl status httpd
+
+</div>
+
+
+<h2>Install/Configure Firewall</h2>
+<div class="code-block">
+sudo dnf install firewalld -y
+sudo systemctl enable firewalld
+sudo systemctl start firewalld
+sudo firewall-cmd --state
+firewall-cmd --get-default-zone
+firewall-cmd --get-active-zones
+sudo firewall-cmd --list-all
+firewall-cmd --get-services
+sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload
+sudo firewall-cmd --list-all
+
+</div>
+
+<h2>Install Git and Clone</h2>
+<div class="code-block">
+sudo dnf install -y git
+git clone https://github.com/natewillis/centurion_web.git
 </div>
