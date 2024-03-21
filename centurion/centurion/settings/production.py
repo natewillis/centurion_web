@@ -1,7 +1,7 @@
 from centurion.settings.common import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'recklessanalysis.com', 'www.recklessanalysis.com', '64.23.128.107']
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',

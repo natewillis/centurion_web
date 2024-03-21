@@ -1,8 +1,6 @@
 from centurion.settings.common import *
 
 
-GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',

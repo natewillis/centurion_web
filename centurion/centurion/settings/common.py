@@ -129,3 +129,6 @@ STORAGES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# GDAL (Geodjango libary)
+GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")

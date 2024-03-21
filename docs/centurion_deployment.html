@@ -87,8 +87,33 @@ sudo firewall-cmd --list-all
 
 </div>
 
+<h2>Install the latest python</h2>
+The link is an example, go find the actual latest and greatest from python.org
+<div class="code-block">
+cd /tmp
+sudo dnf install gcc openssl-devel bzip2-devel libffi-devel wget tar make zlib-devel
+wget https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tgz    
+tar -xf Python-3.12.0.tgz
+cd Python-3.12.0
+./configure --enable-optimizations
+make -j $(nproc)
+sudo make altinstall
+
+</div>
+
 <h2>Install Git and Clone</h2>
+Make sure to be inside your centurion home directory when you run the clone.
 <div class="code-block">
 sudo dnf install -y git
 git clone https://github.com/natewillis/centurion_web.git
+
 </div>
+
+<h2>Setup Virtual Environment</h2>
+Make sure you're in the centurion_web directory that you just cloned
+<div class="code-block">
+cd centurion_web
+python3.12 -m venv .venv
+source .venv/bin/activate <span class="comment"> #this command activates the virtual environment</span>
+</div>
+
