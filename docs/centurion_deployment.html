@@ -95,7 +95,7 @@ sudo dnf install gcc openssl-devel bzip2-devel libffi-devel wget tar make zlib-d
 wget https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tgz    
 tar -xf Python-3.12.0.tgz
 cd Python-3.12.0
-./configure --enable-optimizations
+./configure --enable-optimizations --enable-shared
 make -j $(nproc)
 sudo make altinstall
 
