@@ -8,4 +8,4 @@ def deployment_doc(request):
     return render(request, "docs/centurion_deployment.html")
 
 def best_practices_doc(request):
-    return render(request, "docs/centurion_best_practices.html")
+    return render(request, "docs/centurion_best_practices_and_standards.html")
