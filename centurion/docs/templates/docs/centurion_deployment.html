@@ -160,10 +160,8 @@ Require all granted
 
 # Django config
 LoadModule wsgi_module "/home/centurion/centurion_web/.venv/lib/python3.12/site-packages/mod_wsgi/server/mod_wsgi-py312.cpython-312-x86_64-linux-gnu.so"
-WSGIPythonHome "/home/centurion/centurion_web/.venv"
-WSGIPythonPath "/home/centurion/centurion_web/centurion"
-WSGIScriptAlias / /home/centurion/centurion_web/centurion/centurion/wsgi.py
-WSGIApplicationGroup %{GLOBAL}
+WSGIDaemonProcess centurion_web python-home="/home/centurion/centurion_web/.venv" python-path="/home/centurion/centurion_web/centurion"
+WSGIScriptAlias / /home/centurion/centurion_web/centurion/centurion/wsgi.py process-group=centurion_web
 
 &ltDirectory /home/centurion/centurion_web/centurion/centurion/&gt
 &ltFiles wsgi.py&gt
