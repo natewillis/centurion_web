@@ -124,13 +124,31 @@ source .venv/bin/activate <span class="comment"> #this command activates the vir
 </div>
 
 <h2>SELinux Setup</h2>
+<ol>
+    <li>
+        <strong>Command:</strong> <code>sudo chcon -R system_u:object_r:httpd_sys_script_exec_t:s0 /home/centurion/centurion_web/</code>
+        <p>This command changes the SELinux context of the directory <code>/home/centurion/centurion_web/</code> and all its contents to <code>system_u:object_r:httpd_sys_script_exec_t:s0</code>. It is typically used to allow the Apache web server to execute scripts within that directory as part of its operation, in compliance with SELinux policies.</p>
+        <ul>
+            <li><code>-R</code>: Recursively apply the operation to all files and directories within the specified directory.</li>
+            <li><code>system_u:object_r:httpd_sys_script_exec_t:s0</code>: The SELinux security context to be applied.</li>
+        </ul>
+    </li>
+    <li>
+        <strong>Command:</strong> <code>sudo semanage fcontext -a -t httpd_sys_script_exec_t /home/centurion/centurion_web/</code>
+        <p>This command adds a new SELinux file context mapping for the directory <code>/home/centurion/centurion_web/</code>, setting its type to <code>httpd_sys_script_exec_t</code>. This change is persistent and ensures that the Apache web server can execute scripts within the directory according to SELinux policies.</p>
+        <ul>
+            <li><code>-a</code>: Add a new file context mapping.</li>
+            <li><code>-t httpd_sys_script_exec_t</code>: Specify the SELinux type for the file context.</li>
+        </ul>
+    </li>
+</ol>
 <div class="code-block">
     sudo chcon -R system_u:object_r:httpd_sys_script_exec_t:s0 /home/centurion/centurion_web/
     sudo semanage fcontext -a -t httpd_sys_script_exec_t /home/centurion/centurion_web/
 </div>
 
 <h2>Apache Setup</h2>
-Edit your http.d.conf file located in /etc/httpd/conf to have the following at the end of the file and currently disable selinux but can't do that long term:
+Edit your http.d.conf file located in /etc/httpd/conf to have the following at the end of the file:
 <div class="code-block">
 
 # Static and Media Files for Centurion
