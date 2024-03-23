@@ -7,7 +7,7 @@
     <title>{{ Centurion }}</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link rel="stylesheet" href="/static/common/base.css"></link>
-    {{ extra_style_sheets|safe }}
+    {% block extra_style_sheets %}{% endblock %}
     <style>
     {% block extra_style %}{% endblock %}
     </style>

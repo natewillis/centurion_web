@@ -1,0 +1,11 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block extra_style_sheets %}<link rel="stylesheet" href="{% static 'docs/docs.css' %}"></link>{% endblock %}
+
+
+{% block content %}
+
+Follow PEP
+kebab case for javascript
+if css only applies to a single template, apply it to the extra_style portion of the template, if its common across templates in single app, put a css file with the app_name.css in the static for that app and reference it in the extra_css_sheet, if it applies across apps, put it in base.css
+{% endblock %}

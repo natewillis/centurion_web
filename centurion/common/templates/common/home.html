@@ -50,10 +50,10 @@
     <div class="app-title">CENTURION</div>
     <img src="/static/logo_nobg_medium.png" alt="Centurion Logo">
     <div class="links">
-        <a href="{% url 'doc_page_view' page_name='project_management.html' %}">Telework Plan</a>
+        <a href="{% url 'project_management_doc' %}">Telework Plan</a>
         <a href="{% url 'project_list' %}">Project Management</a>
-        <a href="{% url 'doc_page_view' page_name='centurion_deployment.html' %}">Deployment Instructions</a>
-        <a href="{% url 'doc_page_view' page_name='centurion_best_practices_and_standards.html' %}">Centurion Best Practices and Standards</a>
+        <a href="{% url 'deployment_doc' %}">Deployment Instructions</a>
+        <a href="{% url 'best_practices_and_standards_doc' %}">Centurion Best Practices and Standards</a>
     </div>
 </div>
 {% endblock %}

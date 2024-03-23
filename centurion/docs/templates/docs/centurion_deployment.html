@@ -1,3 +1,9 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block extra_style_sheets %}<link rel="stylesheet" href="{% static 'docs/docs.css' %}"></link>{% endblock %}
+
+
+{% block content %}
 <h1>Centurion Deployment</h1>
 
 <h2>Create New User</h2>
@@ -117,3 +123,35 @@ python3.12 -m venv .venv
 source .venv/bin/activate <span class="comment"> #this command activates the virtual environment</span>
 </div>
 
+<h2>SELinux Setup</h2>
+<div class="code-block">
+    sudo chcon -R system_u:object_r:httpd_sys_script_exec_t:s0 /home/centurion/centurion_web/
+    sudo semanage fcontext -a -t httpd_sys_script_exec_t /home/centurion/centurion_web/
+</div>
+
+<h2>Apache Setup</h2>
+Edit your http.d.conf file located in /etc/httpd/conf to have the following at the end of the file and currently disable selinux but can't do that long term:
+<div class="code-block">
+
+# Static and Media Files for Centurion
+Alias /static/ /home/centurion/centurion_web/centurion/staticfiles/
+
+&ltDirectory /home/centurion/centurion_web/centurion/staticfiles&gt
+Require all granted
+&ltDirectory&gt
+
+# Django config
+LoadModule wsgi_module "/home/centurion/centurion_web/.venv/lib/python3.12/site-packages/mod_wsgi/server/mod_wsgi-py312.cpython-312-x86_64-linux-gnu.so"
+WSGIPythonHome "/home/centurion/centurion_web/.venv"
+WSGIPythonPath "/home/centurion/centurion_web/centurion"
+WSGIScriptAlias / /home/centurion/centurion_web/centurion/centurion/wsgi.py
+WSGIApplicationGroup %{GLOBAL}
+
+&ltDirectory /home/centurion/centurion_web/centurion/centurion/&gt
+&ltFiles wsgi.py&gt
+Require all granted
+&lt/Files&gt
+&lt/Directory&gt
+
+</div>
+{% endblock %}

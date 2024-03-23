@@ -1,4 +1,10 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block extra_style_sheets %}<link rel="stylesheet" href="{% static 'docs/docs.css' %}"></link>{% endblock %}
 
+
+{% block content %}
+    
     <h1>Telework Project Management Plan</h1>
 
     <section>
@@ -150,4 +156,5 @@
         </ul>
     </section>
     
+{% endblock %}
     
