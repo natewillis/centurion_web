@@ -147,27 +147,64 @@ source .venv/bin/activate <span class="comment"> #this command activates the vir
     sudo semanage fcontext -a -t httpd_sys_script_exec_t /home/centurion/centurion_web/
 </div>
 
+<h2>Self signed certificate generation</h2>
+Make sure you answer the questions of the openssl questions common name with whatever you name your ServerName in apache
+<div class="code-block">
+    sudo dnf install mod_ssl <span class="comment"> # Assuming /etc/httpd/modules doesnt have mod_ssl.so</span>
+    sudo mkdir /etc/ssl/private
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/centurion-selfsigned.key -out /etc/ssl/certs/centurion-selfsigned.crt
+</div>
+
 <h2>Apache Setup</h2>
-Edit your http.d.conf file located in /etc/httpd/conf to have the following at the end of the file:
+Edit the standard http.d.conf file located in /etc/httpd/conf to have the following lines:
+<div class="code-block">
+    Listen 80
+    Listen 443
+</div>
+
+Now we create a centurion.conf file in /etc/httpd/conf.d/ and make sure it includes the following
 <div class="code-block">
 
-# Static and Media Files for Centurion
-Alias /static/ /home/centurion/centurion_web/centurion/staticfiles/
+&ltVirtualHost 64.23.128.107:80&gt
+# Basic http config
+ServerName centuriondevelopment.net
+ServerAlias www.centuriondevelopment.net
+Redirect permanent / https://www.centuriondevelopment.net
+&lt\VirtualHost&gt
 
-&ltDirectory /home/centurion/centurion_web/centurion/staticfiles&gt
-Require all granted
-&ltDirectory&gt
-
-# Django config
 LoadModule wsgi_module "/home/centurion/centurion_web/.venv/lib/python3.12/site-packages/mod_wsgi/server/mod_wsgi-py312.cpython-312-x86_64-linux-gnu.so"
-WSGIDaemonProcess centurion_web python-home="/home/centurion/centurion_web/.venv" python-path="/home/centurion/centurion_web/centurion"
-WSGIScriptAlias / /home/centurion/centurion_web/centurion/centurion/wsgi.py process-group=centurion_web
+#LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so
+
+&ltVirtualHost 64.23.128.107:443&gt
+
+# Server details
+ServerName centuriondevelopment.net
+ServerAlias www.centuriondevelopment.net
 
 &ltDirectory /home/centurion/centurion_web/centurion/centurion/&gt
 &ltFiles wsgi.py&gt
 Require all granted
 &lt/Files&gt
 &lt/Directory&gt
+
+# Static files for centurion
+Alias /static/ /home/centurion/centurion_web/centurion/staticfiles/
+&ltDirectory /home/centurion/centurion_web/centurion/staticfiles&gt
+Require all granted
+&ltDirectory&gt
+
+# WSGI daemon mode config for centurion
+WSGIDaemonProcess centurion_web python-home="/home/centurion/centurion_web/.venv" python-path="/home/centurion/centurion_web/centurion"
+WSGIProcessGroup centurion_web
+WSGIScriptAlias / /home/centurion/centurion_web/centurion/centurion/wsgi.py process-group=centurion_web
+WSGIApplicationGroup %{GLOBAL}
+
+# SSL config
+SSLEngine on
+SSLCertificateFile /etc/ssl/certs/centurion-selfsigned.crt
+SSLCertificateKeyFile /etc/ssl/private/centurion-selfsigned.key
+
+&lt\VirtualHost&gt
 
 </div>
 {% endblock %}
