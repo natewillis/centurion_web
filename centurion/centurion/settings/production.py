@@ -1,7 +1,7 @@
 from centurion.settings.common import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'recklessanalysis.com', 'www.recklessanalysis.com', '64.23.128.107']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'centuriondevelopment.net', 'www.centuriondevelopment.net', '64.23.128.107']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
