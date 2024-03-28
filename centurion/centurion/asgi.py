@@ -17,9 +17,10 @@ from django.conf import settings
 from django.core.wsgi import get_wsgi_application
 from chat.routing import websocket_urlpatterns
 
-if settings.DEBUG:
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "centurion.settings.development")
-    application = ProtocolTypeRouter(
+
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "centurion.settings.development")
+application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
         "websocket": AllowedHostsOriginValidator(
@@ -27,16 +28,7 @@ if settings.DEBUG:
         ),
     }
 )
-else:
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "centurion.settings.production")
-    application = ProtocolTypeRouter(
-    {
-        "http": get_wsgi_application(),
-        "websocket": AllowedHostsOriginValidator(
-            AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
-        ),
-    }
-)
+
 
 # Initialize Django ASGI application early to ensure the AppRegistry
 # is populated before importing code that may import ORM models.
