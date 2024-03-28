@@ -15,6 +15,7 @@
         + '/ws/chat/'
         + roomName
         + '/'
+        {% if not debug %} + ':443' {% endif %}
     );
 
     chatSocket.onmessage = function(e) {
