@@ -39,6 +39,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'common',
     'projects',
     'docs',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +82,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'centurion.wsgi.application'
 
-
+# Channels
+ASGI_APPLICATION = 'centurion.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

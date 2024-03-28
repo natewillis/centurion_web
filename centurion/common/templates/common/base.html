@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ Centurion }}</title>
+    <script src="{% static 'common/htmx.min.js' %}"></script>
+    <script src="{% static 'common/ws.js' %}"></script>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link rel="stylesheet" href="/static/common/base.css"></link>
     {% block extra_style_sheets %}{% endblock %}
@@ -23,6 +25,12 @@
     <div class="topnav">
         <a href="{% url 'homepage' %}">Home</a>
         <a href="{% url 'project_list' %}">Project Management</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'chatroom' room_name='room' %}">Chat</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
     </div>
     <!-- End of Top Navigation Bar -->
 
