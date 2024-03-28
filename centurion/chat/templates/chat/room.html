@@ -11,20 +11,20 @@
 
     {% if debug %}
     const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + roomName
+        + '/'
+    );
+    {% else %}
+    const chatSocket = new WebSocket(
         'wss://'
         + window.location.host
         + '/ws/chat/'
         + roomName
         + '/'
         + ':443' 
-    );
-    {% else %}
-    const chatSocket = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/chat/'
-        + roomName
-        + '/'
     );
     {% endif %}
 
