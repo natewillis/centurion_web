@@ -115,12 +115,41 @@ git clone https://github.com/natewillis/centurion_web.git
 
 </div>
 
-<h2>Setup Virtual Environment</h2>
+<h2>Setup Virtual Environment and install python packages</h2>
 Make sure you're in the centurion_web directory that you just cloned
 <div class="code-block">
 cd centurion_web
 python3.12 -m venv .venv
 source .venv/bin/activate <span class="comment"> #this command activates the virtual environment</span>
+pip install -r ./requirements.txt
+</div>
+
+<h2>Configure Daphne as a service</h2>
+
+
+
+<h2>Install Redis</h2>
+In /etc/system/systemd create a file as root called daphne.service that contains the following
+<div class="code-block">
+    [Unit]
+    Description=Daphne for Django
+    After=network.target
+    
+    [Service]
+    Type=simple
+    User=root
+    Environment="LD_LIBRARY_PATH=/usr/local/lib/"
+    WorkingDirectory=/home/centurion/centurion_web/centurion
+    ExecStart= /home/centurion/centurion_web/.venv/bin/python3.12 /home/centurion/centurion_web/.venv/bin/daphne -b 0.0.0.0 -p 8001 centurion.asgi:application
+    
+    
+    [Install]
+    WantedBy=multi-user.target    
+</div>
+Then to run it:
+<div class="code-block">
+    systemctl daemon-reload
+    systemctl start daphne
 </div>
 
 <h2>SELinux Setup</h2>
