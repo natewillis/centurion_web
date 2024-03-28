@@ -9,14 +9,24 @@
 <script>
     const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
+    {% if debug %}
+    const chatSocket = new WebSocket(
+        'wss://'
+        + window.location.host
+        + '/ws/chat/'
+        + roomName
+        + '/'
+        + ':443' 
+    );
+    {% else %}
     const chatSocket = new WebSocket(
         'ws://'
         + window.location.host
         + '/ws/chat/'
         + roomName
         + '/'
-        {% if not debug %} + ':443' {% endif %}
     );
+    {% endif %}
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
