@@ -125,10 +125,6 @@ pip install -r ./requirements.txt
 </div>
 
 <h2>Configure Daphne as a service</h2>
-
-
-
-<h2>Install Redis</h2>
 In /etc/system/systemd create a file as root called daphne.service that contains the following
 <div class="code-block">
     [Unit]
@@ -140,8 +136,7 @@ In /etc/system/systemd create a file as root called daphne.service that contains
     User=root
     Environment="LD_LIBRARY_PATH=/usr/local/lib/"
     WorkingDirectory=/home/centurion/centurion_web/centurion
-    ExecStart= /home/centurion/centurion_web/.venv/bin/python3.12 /home/centurion/centurion_web/.venv/bin/daphne -b 0.0.0.0 -p 8001 centurion.asgi:application
-    
+    ExecStart= /home/centurion/centurion_web/.venv/bin/python3.12 /home/centurion/centurion_web/.venv/bin/daphne -b 0.0.0.0 -p 8001 --verbosity 3 centurion.asgi:application
     
     [Install]
     WantedBy=multi-user.target    
@@ -150,6 +145,35 @@ Then to run it:
 <div class="code-block">
     systemctl daemon-reload
     systemctl start daphne
+</div>
+
+<h2>Install redis</h2>
+Run this in the centurion home directory
+<div class="code-block">
+wget https://download.redis.io/redis-stable.tar.gz
+tar -xzvf redis-stable.tar.gz
+cd redis-stable
+make
+sudo make install
+</div>
+In /etc/system/systemd create a file as root called redis.service that contains the following
+<div class="code-block">
+    [Unit]
+    Description=Redis
+    After=syslog.target
+
+    [Service]
+    ExecStart=/usr/local/bin/redis-server
+    RestartSec=5s
+    Restart=on-success
+
+    [Install]
+    WantedBy=multi-user.target 
+</div>
+Then to run it:
+<div class="code-block">
+    systemctl daemon-reload
+    systemctl start redis
 </div>
 
 <h2>SELinux Setup</h2>
@@ -175,7 +199,20 @@ Then to run it:
     sudo chcon -R system_u:object_r:httpd_sys_script_exec_t:s0 /home/centurion/centurion_web/
     sudo semanage fcontext -a -t httpd_sys_script_exec_t /home/centurion/centurion_web/
 </div>
+In general the following commands help troubleshoot selinux issues
+<div class="code-block">
+    sealert -l "*"
+    setenforce 0 # turns on permissive mode so you can see if it works without
+    setenforce 1 # turns it back on
+</div>
+Some of the commands i had to run to make it go (but should probably get more info on these)
+<div class="code-block">
+    ausearch -c '(thon3.12)' --raw | audit2allow -M my-thon312
+    semodule -i my-thon312.pp
 
+    ausearch -c 'httpd' --raw | audit2allow -M my-httpd
+    semodule -X 300 -i my-httpd.pp
+</div>
 <h2>Self signed certificate generation</h2>
 Make sure you answer the questions of the openssl questions common name with whatever you name your ServerName in apache
 <div class="code-block">
@@ -199,6 +236,12 @@ Now we create a centurion.conf file in /etc/httpd/conf.d/ and make sure it inclu
 ServerName centuriondevelopment.net
 ServerAlias www.centuriondevelopment.net
 Redirect permanent / https://www.centuriondevelopment.net
+
+# Added by letsencrypt (not going to be used in prod)
+RewriteCond %{SERVER_NAME} =centuriondevelopment.net [OR]
+RewriteCond %{SERVER_NAME} =www.centuriondevelopment.net
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+
 &lt\VirtualHost&gt
 
 LoadModule wsgi_module "/home/centurion/centurion_web/.venv/lib/python3.12/site-packages/mod_wsgi/server/mod_wsgi-py312.cpython-312-x86_64-linux-gnu.so"
@@ -210,6 +253,10 @@ LoadModule wsgi_module "/home/centurion/centurion_web/.venv/lib/python3.12/site-
 ServerName centuriondevelopment.net
 ServerAlias www.centuriondevelopment.net
 
+# Extra logging if needed
+LogLevel debug
+
+# Ensure access to wsgi file
 &ltDirectory /home/centurion/centurion_web/centurion/centurion/&gt
 &ltFiles wsgi.py&gt
 Require all granted
@@ -230,8 +277,25 @@ WSGIApplicationGroup %{GLOBAL}
 
 # SSL config
 SSLEngine on
-SSLCertificateFile /etc/ssl/certs/centurion-selfsigned.crt
-SSLCertificateKeyFile /etc/ssl/private/centurion-selfsigned.key
+
+# Self signed cert config (not using on unclass version)
+# SSLCertificateFile /etc/ssl/certs/centurion-selfsigned.crt
+# SSLCertificateKeyFile /etc/ssl/private/centurion-selfsigned.key
+
+# Daphne Websocket Proxy
+ProxyPass /wss/ wss://127.0.0.1:8001/ws/
+ProxyPassReverse /wss/ wss://127.0.0.1:8001/ws/
+
+# Rewrite rule to handle WebSocket upgrades
+RewriteEngine on
+RewriteCond %{HTTP:Upgrade} websocket [NC]
+RewriteCond %{HTTP:Connection} upgrade [NC]
+RewriteRule ^/ws/(.*) ws://127.0.0.1:8001/ws/$1 [P,L]
+
+# Added by letsencrypt (not for use in prod)
+Include /etc/letsencrypt/options-ssl-apache.conf
+SSLCertificateFile /etc/letsencrypt/live/centuriondevelopment.net/fullchain.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/centuriondevelopment.net/privkey.pem
 
 &lt\VirtualHost&gt
 
