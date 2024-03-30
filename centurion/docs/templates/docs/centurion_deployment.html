@@ -267,7 +267,14 @@ Require all granted
 Alias /static/ /home/centurion/centurion_web/centurion/staticfiles/
 &ltDirectory /home/centurion/centurion_web/centurion/staticfiles&gt
 Require all granted
-&ltDirectory&gt
+&lt/Directory&gt
+
+# References for centurion
+Alias /references/ /home/centurion/centurion_web/references/
+&ltDirectory /home/centurion/centurion_web/references&gt
+Require all granted
+&lt/Directory&gt
+
 
 # WSGI daemon mode config for centurion
 WSGIDaemonProcess centurion_web python-home="/home/centurion/centurion_web/.venv" python-path="/home/centurion/centurion_web/centurion"
