@@ -1,8 +1,28 @@
 {% extends 'common/base.html' %}
 
+{% block extra_style %}
+.message-bubble {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--submain);
+}
+.timestamp {
+    font-size: small;
+    margin-right: 5px;
+}
+{% endblock %}
+
 {% block content %}
 
-<textarea id="chat-log" cols="100" rows="20"></textarea><br>
+<div id="chat-log" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+    {% for message in messages %}
+    <div class="message-bubble">
+        <small class="timestamp">{{ message.created_at|date:"H:i" }}</small>
+        <strong>{{ message.username.username }}:</strong> {{ message.message }}
+    </div>
+    {% endfor %}
+</div><br>
 <input id="chat-message-input" type="text" size="100"><br>
 <input id="chat-message-submit" type="button" value="Send">
 {{ room_name|json_script:"room-name" }}
@@ -20,7 +40,11 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message-bubble');
+        messageElement.innerHTML = `<small class="timestamp">${data.created_at}</small><strong>${data.username}:</strong> ${data.message}`;
+        document.querySelector('#chat-log').appendChild(messageElement);
+        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
     };
 
     chatSocket.onclose = function(e) {
@@ -44,6 +68,9 @@
         messageInputDom.value = '';
     };
 </script>
-     
+
+<style>
+
+</style>
 
 {% endblock content %}
