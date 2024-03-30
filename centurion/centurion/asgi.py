@@ -18,9 +18,15 @@ from chat.routing import websocket_urlpatterns
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "centurion.settings.production")
+
+# Initialize Django ASGI application early to ensure the AppRegistry
+# is populated before importing code that may import ORM models.
+django_asgi_app = get_asgi_application()
+
+
 application = ProtocolTypeRouter(
     {
-        "http": get_asgi_application(),
+        "http": django_asgi_app,
         "websocket": AllowedHostsOriginValidator(
             AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
         ),
@@ -28,7 +34,4 @@ application = ProtocolTypeRouter(
 )
 
 
-# Initialize Django ASGI application early to ensure the AppRegistry
-# is populated before importing code that may import ORM models.
-django_asgi_app = get_asgi_application()
 
