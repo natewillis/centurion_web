@@ -5,7 +5,7 @@ from django.contrib.gis.gdal import GDALRaster
 def import_elevation_data():
 
     # import raster
-    elevation_raster = GDALRaster("data\\reprojected_downsampled_ETOPO.tif", write=True)
+    elevation_raster = GDALRaster('../../data/reprojected_downsampled_ETOPO.tif', write=True)
     print("Raster object created successfully.")
     print(f"Raster size: {elevation_raster.width}x{elevation_raster.height}")
     print(f"Number of bands: {elevation_raster.bands}")
