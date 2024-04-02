@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'projects',
     'docs',
     'chat',
+    'support',
+    'scenarios',
 ]
 
 MIDDLEWARE = [

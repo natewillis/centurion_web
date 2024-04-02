@@ -61,6 +61,10 @@
 
     <span class="comment"># Now you're in a terminal inside the database, create a dedicated user for reading/writing</span>
     CREATE DATABASE geodjango OWNER geodjango;
+
+    psql -d centurion;
+    CREATE EXTENSION postgis;
+    CREATE EXTENSION postgis_raster;
     psql -d myspatialdb -c "SELECT PostGIS_Version();" <span class="comment"> #Validate that setup worked</span>
     exit
 
