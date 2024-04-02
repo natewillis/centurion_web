@@ -1,9 +1,10 @@
 from .models import Elevation
 from django.contrib.gis.gdal import GDALRaster
-
+import os
 
 def import_elevation_data():
 
+    print(os.getcwd)
     # import raster
     elevation_raster = GDALRaster('../../data/reprojected_downsampled_ETOPO.tif', write=True)
     print("Raster object created successfully.")
