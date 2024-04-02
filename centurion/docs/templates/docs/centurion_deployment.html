@@ -311,4 +311,12 @@ SSLCertificateKeyFile /etc/letsencrypt/live/centuriondevelopment.net/privkey.pem
 &lt\VirtualHost&gt
 
 </div>
+
+<h2>Data Processing Notes</h2>
+To process the altitude data from <a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model">NOAA</a> you can do the following in gdal to downsample and reproject into SRID 4326:
+<div class="code-block">
+    gdal_translate -of GTiff -outsize 10% 10% C:\Users\natew\Downloads\ETOPO_2022_v1_60s_N90W180_bed.tif C:\code\centurion_web\data\resampled_ETOPO.tif
+    gdalwarp -t_srs EPSG:4326 C:\code\centurion_web\data\resampled_ETOPO.tif C:\code\centurion_web\data\low_res_resampled_reprojected_ETOPO.tif
+</div>
+
 {% endblock %}
