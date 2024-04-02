@@ -4,7 +4,7 @@ import os
 
 def import_elevation_data():
 
-    print(os.getcwd())
+    print(f'current directory is {os.getcwd()}')
     # import raster
     elevation_raster = GDALRaster('../data/reprojected_downsampled_ETOPO.tif', write=True)
     print("Raster object created successfully.")
@@ -15,3 +15,4 @@ def import_elevation_data():
     # Create elevation object
     new_elevation_object = Elevation.objects.create(raster=elevation_raster,name="ETOPO 2022")
     new_elevation_object.save()
+    print('import complete!')
