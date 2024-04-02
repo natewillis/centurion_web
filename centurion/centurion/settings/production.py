@@ -4,7 +4,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'centuriondevelopment.net', 'www.centuriondevelopment.net', '64.23.128.107']
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'centurion', 
         'USER': 'centurion',
         'PASSWORD': env("DB_PASSWORD"),
