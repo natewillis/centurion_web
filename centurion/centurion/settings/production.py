@@ -10,10 +10,6 @@ DATABASES = {
         'PASSWORD': env("DB_PASSWORD"),
         'HOST': '127.0.0.1', 
         'PORT': '5432',
-        'OPTIONS': {
-            'connect_timeout': 60,  # Set the timeout to 60 seconds
-            'options': '-c statement_timeout=60000',
-        },
     }
 }
 
