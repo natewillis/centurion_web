@@ -216,7 +216,12 @@ Some of the commands i had to run to make it go (but should probably get more in
 
     ausearch -c 'httpd' --raw | audit2allow -M my-httpd
     semodule -X 300 -i my-httpd.pp
+
+    setsebool -P httpd_can_network_connect_db 1
+
+
 </div>
+May want to look into <a href="https://www.serverlab.ca/tutorials/linux/web-servers-linux/configuring-selinux-policies-for-apache-web-servers/"> this link </a>
 <h2>Self signed certificate generation</h2>
 Make sure you answer the questions of the openssl questions common name with whatever you name your ServerName in apache
 <div class="code-block">
