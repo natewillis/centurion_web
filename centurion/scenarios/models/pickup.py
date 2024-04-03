@@ -13,4 +13,4 @@ class Pickup(models.Model):
         return f'{self.box.name} pickup'
 
     def datetime(self):
-        return self.order.datetime + self.offset
+        return self.order.datetime() + self.offset

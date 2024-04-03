@@ -12,5 +12,5 @@ class Delivery(models.Model):
         return f'{self.weight} pound delivery'
 
     def datetime(self):
-        return self.pickup.datetime + self.offset
+        return self.pickup.datetime() + self.offset
     

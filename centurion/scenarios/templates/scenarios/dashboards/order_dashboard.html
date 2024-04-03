@@ -42,21 +42,30 @@
 
 {% block content %}
 
-<h1>{{ scenario.name }}</h1>
+<h1>{{ order.name }}</h1>
 
 <div class="flex-grid">
     <div class="col">
-        <h2>Scenario Timeline</h2>
+        <h2>Pickups</h2>
+        <a href="{% url 'pickup_create_with_order_id' order.id %}">Add New Pickup</a>
+        <table>
+          <tr>
+              <th>Pickup</th>
+          </tr>
+          {% for pickup in order.pickups.all %}
+              <tr><td><a href="{% url 'pickup_detail' pickup.id %}">{{ pickup }}</a></td></tr>
+          {% endfor %}
+        </table>
     </div>
     <div class="col">
-        <h2>Order Timeline</h2>
-        <a href="{% url 'order_create_with_scenario_id' scenario.id %}">Add New Order</a>
+        <h2>Deliveries</h2>
+        <a href="#">Add New Delivery</a>
         <table>
             <tr>
                 <th>Order Name</th>
             </tr>
             {% for order in scenario.orders.all %}
-                <tr><td><a href="{% url 'order_dashboard' order.id %}">{{ order.name }}</a></td></tr>
+                <tr><td><a href="{% url 'order_detail' order.id %}">{{ order.name }}</a></td></tr>
             {% endfor %}
         </table>
     </div>
