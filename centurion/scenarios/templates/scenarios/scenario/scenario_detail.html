@@ -1,0 +1,9 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+    <h2>{{ object.name }}</h2>
+    <p>Created at: {{ object.created_at }}</p>
+    <p>Exercise start datetime: {{ object.exercise_start_datetime }}</p>
+    <a href="{% url 'scenario_update' object.pk %}">Edit</a>
+    <a href="{% url 'scenario_delete' object.pk %}">Delete</a>
+{% endblock %}

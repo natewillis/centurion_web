@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'projects',
     'docs',
     'chat',
+    'support',
+    'scenarios',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +82,7 @@ TEMPLATES = [
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'centurion.wsgi.application'
 
 # Channels
@@ -145,10 +148,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")
 GEOS_LIBRARY_PATH = env("GEOS_LIBRARY_PATH")
 
-# DATABASE
+# DATABASE (should be django.contrib.gis.db.backends.postgis, not django.db.backends.postgresql)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'centurion', 
         'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
