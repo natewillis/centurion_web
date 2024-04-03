@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.shortcuts import render
 from ..models import Scenario
 
 class ScenarioListView(ListView):
@@ -28,3 +29,8 @@ class ScenarioDeleteView(DeleteView):
     model = Scenario
     template_name = 'scenarios/scenario/scenario_confirm_delete.html'
     success_url = reverse_lazy('scenario_list')
+
+# Other views
+def navbar_scenario_list(request):
+    scenarios = Scenario.objects.all()  # Assuming you have a Scenario model
+    return render(request, 'scenarios/scenario/partial/scenario_list.html', {'scenarios': scenarios})

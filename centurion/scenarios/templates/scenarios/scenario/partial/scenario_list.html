@@ -1,0 +1,3 @@
+{% for scenario in scenarios %}
+    <a href="{% url 'scenario_dashboard' scenario.id %}">{{ scenario.name }}</a>
+{% endfor %}

@@ -1,0 +1,66 @@
+{% extends 'common/base.html' %}
+
+{% block extra_style %}
+
+  .flex-grid {
+    display: flex;
+  }
+  .flex-grid .col {
+    flex: 1;
+  }
+  .flex-grid-thirds {
+    display: flex;
+    justify-content: space-between;
+  }
+  .flex-grid-thirds .col {
+    width: 32%;
+  }
+  
+  @media (max-width: 400px) {
+    .flex-grid,
+    .flex-grid-thirds {
+      display: block;
+      .col {
+        width: 100%;
+        margin: 0 0 10px 0;
+      }
+    }
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+
+  .flex-grid { 
+    margin: 0 0 20px 0;
+  }
+  .col {
+    padding: 20px;
+  }
+
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ scenario.name }}</h1>
+
+<div class="flex-grid">
+    <div class="col">
+        <h2>Scenario Timeline</h2>
+    </div>
+    <div class="col">
+        <h2>Order Timeline</h2>
+        <a href="{% url 'order_create_with_scenario_id' scenario.id %}">Add New Order</a>
+        <table>
+            <tr>
+                <th>Order Name</th>
+            </tr>
+            {% for order in scenario.orders.all %}
+                <tr><a href="{% url 'order_detail' order.id %}">{{ order.name }}</a></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
