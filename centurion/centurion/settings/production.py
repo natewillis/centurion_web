@@ -1,7 +1,7 @@
 from centurion.settings.common import *
 
 # Turn debug off
-DEBUG = False
+DEBUG = True
 
 # Allowed hosts
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'centuriondevelopment.net', 'www.centuriondevelopment.net', '64.23.128.107']
