@@ -6,7 +6,7 @@ class Delivery(models.Model):
     weight = models.IntegerField(blank=False, null=False)
     pickup = models.ForeignKey(Pickup, on_delete=models.CASCADE, related_name='deliveries')
     offset = models.DurationField(blank=False, null=False)
-    location = models.PointField(blank=False, null=False, srid=4326, default=Point(-95.9, 41.2))
+    location = models.PointField(blank=False, null=False, srid=4326, default=Point(-86.6, 34.7))
     altitude_ft = models.FloatField(blank=False, null=False)
 
     def __str__(self):

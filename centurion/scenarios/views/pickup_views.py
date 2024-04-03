@@ -16,7 +16,7 @@ class PickupDetailView(DetailView):
 class PickupCreateView(CreateView):
     model = Pickup
     template_name = 'scenarios/pickup/pickup_form.html'
-    fields = ['box', 'order', 'offset', 'altitude_ft']
+    fields = ['box', 'order', 'offset', 'location', 'altitude_ft']
 
     def get_initial(self):
         initial = super().get_initial()
@@ -32,7 +32,7 @@ class PickupCreateView(CreateView):
 class PickupUpdateView(UpdateView):
     model = Pickup
     template_name = 'scenarios/pickup/pickup_form.html'
-    fields = ['box', 'order', 'offset', 'altitude_ft']
+    fields = ['box', 'order', 'offset', 'location', 'altitude_ft']
 
     def get_success_url(self):
         return reverse('pickup_detail', kwargs={'pk': self.object.pk})
@@ -42,4 +42,3 @@ class PickupDeleteView(DeleteView):
     model = Pickup
     template_name = 'scenarios/pickup/pickup_confirm_delete.html'
     success_url = reverse_lazy('pickup_list')
-    
