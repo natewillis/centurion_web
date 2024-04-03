@@ -144,3 +144,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # GDAL (Geodjango libary)
 GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")
 GEOS_LIBRARY_PATH = env("GEOS_LIBRARY_PATH")
+
+# DATABASE
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'centurion', 
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': '127.0.0.1', 
+        'PORT': '5432',
+    }
+}
+
+# Map what internal IP is
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
