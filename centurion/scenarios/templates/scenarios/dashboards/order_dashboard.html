@@ -50,24 +50,20 @@
         <a href="{% url 'pickup_create_with_order_id' order.id %}">Add New Pickup</a>
         <table>
           <tr>
+              <th>ID</th>
               <th>Pickup</th>
           </tr>
           {% for pickup in order.pickups.all %}
-              <tr><td><a href="{% url 'pickup_detail' pickup.id %}">{{ pickup }}</a></td></tr>
+              <tr>
+                <td hx-get="{% url 'order_dashboard_delivery_partial' pickup.id %}" hx-target="#dashboard-deliveries" hx-trigger="click">{{ pickup.id }}</td>
+                <td><a href="{% url 'pickup_detail' pickup.id %}">{{ pickup }}</a></td>
+              </tr>
           {% endfor %}
         </table>
     </div>
-    <div class="col">
+    <div id="dashboard-deliveries" class="col">
         <h2>Deliveries</h2>
-        <a href="#">Add New Delivery</a>
-        <table>
-            <tr>
-                <th>Order Name</th>
-            </tr>
-            {% for order in scenario.orders.all %}
-                <tr><td><a href="{% url 'order_detail' order.id %}">{{ order.name }}</a></td></tr>
-            {% endfor %}
-        </table>
+        Click a Pickup ID to look at its deliveries.
     </div>
 </div>
 

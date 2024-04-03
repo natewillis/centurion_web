@@ -1,0 +1,14 @@
+<h2>Deliveries for Pickup {{ pickup.id }}</h2>
+<a href="{% url 'delivery_create_with_pickup_id' pickup.id %}">Add New Delivery</a>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Delivery</th>
+    </tr>
+    {% for delivery in pickup.deliveries.all %}
+        <tr>
+            <td>{{ delivery.id }}</td>
+            <td><a href="{% url 'delivery_detail' delivery.id %}">{{ delivery }}</a></td>
+        </tr>
+    {% endfor %}
+</table>

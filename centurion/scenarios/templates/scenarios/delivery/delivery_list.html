@@ -1,0 +1,17 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+    <h2>Deliveries</h2>
+    <a href="{% url 'delivery_create' %}">Add New Pickup</a>
+    <ul>
+        {% for delivery in object_list %}
+            <li>
+                <a href="{% url 'delivery_detail' delivery.pk %}">{{ delivery.weight}} LB Pickup</a>
+                (Order: {{ delivery.order.name }}, Offset: {{ delivery.offset }})
+                <a href="{% url 'delivery_update' delivery.pk %}">Edit</a>
+                <a href="{% url 'delivery_delete' delivery.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
