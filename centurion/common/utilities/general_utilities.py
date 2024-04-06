@@ -20,7 +20,7 @@ def get_all_related_objects(instance):
 
     # iterate through all the fields of the model
     for field in instance._meta.get_fields():
-        print(field)
+        
         # check if this is foreign key
         if isinstance(field, ForeignObjectRel):
 
