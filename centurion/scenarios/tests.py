@@ -32,3 +32,5 @@ class SimulationTestCase(TestCase):
         simulate_scenario(self.scenario)
         self.pickup.refresh_from_db()
         self.assertEqual(self.pickup.country, self.us)
+        self.delivery.refresh_from_db()
+        self.assertEqual(self.delivery.country, self.us)

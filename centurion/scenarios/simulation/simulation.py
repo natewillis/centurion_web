@@ -2,6 +2,7 @@ from collections import defaultdict
 from datetime import datetime
 from common.utilities.general_utilities import get_all_related_objects
 from .simulate_pickups import simulate_pickups
+from .simulate_deliveries import simulate_deliveries
 
 
 def simulate_scenario(scenario):
@@ -42,10 +43,15 @@ def simulate_scenario(scenario):
     # iterate objects
     for time_key in sorted(event_collection.keys()):
         
+        # simulate deliveries
+        if 'Delivery' in event_collection[time_key]:
+            simulate_deliveries(deliveries=event_collection[time_key]['Delivery'], simulation_data=simulation_data)
+
         # simulate pickups
         if 'Pickup' in event_collection[time_key]:
             simulate_pickups(pickups=event_collection[time_key]['Pickup'], simulation_data=simulation_data)
 
+        
 
     # save objects that changed
     for model_key in simulation_data['changed_instances']:
