@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, render
+from django.http import JsonResponse
 from ..models import Pickup, Order
 
 class PickupListView(ListView):
@@ -48,3 +49,8 @@ def visualize_pickup(request, pk):
     pickup = Pickup.objects.get(pk=pk)
     context = {'pickup': pickup}
     return render(request, 'scenarios/pickup/pickup_visualize.html', context)
+
+def visualize_pickup_czml(request, pk):
+    pickup = Pickup.objects.get(pk=pk)
+    data = pickup.generate_visualization_czml().to_json()
+    return JsonResponse(data, safe=False)

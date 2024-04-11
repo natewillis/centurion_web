@@ -1,11 +1,16 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
+from django.templatetags.static import static
 from datetime import timedelta
 from .order import Order
 from common.utilities.general_utilities import calculate_hash
+from common.utilities.astrodynamic_utilities import generate_drone_path, generate_drone_seperation_point_and_timedelta
+from common.utilities.cesium_utilities import Packet, CZMLDocument
 from support.models import Box, WorldBorder
+import datetime
 
 PICKUP_GENERATE_ATTRIBUTE_VERSION=1
+FEET_PER_NAUTICAL_MILE = 6076
 
 class Pickup(models.Model):
     box = models.ForeignKey(Box, on_delete=models.CASCADE, default=Box.get_default_pk)
@@ -41,4 +46,30 @@ class Pickup(models.Model):
         self.simulated_attribute_hash = self.simulated_attribute_hash()
 
 
-    
+    def key_impact(self):
+        try:
+            return self.deliveries.earliest('id')
+        except Pickup.DoesNotExist:
+            return None
+
+    def generate_visualization_czml(self):
+
+        # create end_point lists
+        end_points = []
+        end_timedeltas = []
+        end_altitudes = []
+        for delivery in self.deliveries.order_by('id'):
+            end_points.append(delivery.location)
+            end_timedeltas.append(delivery.offset)
+            end_altitudes.append(delivery.altitude_ft/FEET_PER_NAUTICAL_MILE)
+        
+        # get flight paths
+        print(f'flight path location is {self.location}')
+        flight_paths = generate_drone_path(self.location, self.altitude_ft/FEET_PER_NAUTICAL_MILE, end_points, end_altitudes, end_timedeltas)
+
+        # create czml document
+        czml_document = CZMLDocument(self.datetime(), self.datetime() + datetime.timedelta(hours=2))
+        czml_document.add_flight_path_packets(static('common/models/drone.gltf'), self.datetime(), flight_paths)
+
+        # return document
+        return czml_document

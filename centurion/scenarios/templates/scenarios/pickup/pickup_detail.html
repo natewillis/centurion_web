@@ -3,6 +3,7 @@
 {% block content %}
     <p>Datetime: {{ object.datetime }}</p>
     <p>Box: {{ object.box }}</p>
+    <p>Location (ft): {{ object.location.x }} {{ object.location.y }}</p>
     <p>Altitude (ft): {{ object.altitude_ft }}</p>
     <p>Order: {{ object.order }}</p>
     <a href="{% url 'pickup_update' object.pk %}">Edit</a>
