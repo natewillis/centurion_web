@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import ScenarioListView, ScenarioDetailView, ScenarioCreateView, ScenarioUpdateView, ScenarioDeleteView
 from .views import OrderListView, OrderDetailView, OrderCreateView, OrderUpdateView, OrderDeleteView
-from .views import PickupCreateView, PickupDeleteView, PickupDetailView, PickupListView, PickupUpdateView
+from .views import PickupCreateView, PickupDeleteView, PickupDetailView, PickupListView, PickupUpdateView, visualize_pickup
 from .views import DeliveryCreateView, DeliveryDeleteView, DeliveryDetailView, DeliveryListView, DeliveryUpdateView
 from .views import navbar_scenario_list, scenario_dashboard, order_dashboard, order_dashboard_delivery_partial
 
@@ -41,6 +41,7 @@ urlpatterns += [
     path('pickup/add/order/<int:order_id>/', PickupCreateView.as_view(), name='pickup_create_with_order_id'),
     path('pickup/<int:pk>/edit/', PickupUpdateView.as_view(), name='pickup_update'),
     path('pickup/<int:pk>/delete/', PickupDeleteView.as_view(), name='pickup_delete'),
+    path('pickup/<int:pk>/visualize/', visualize_pickup, name='pickup_visualize'),
 ]
 
 # Deliveries

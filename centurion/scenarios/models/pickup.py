@@ -33,9 +33,9 @@ class Pickup(models.Model):
     def generate_attributes(self):
 
         # calculate country
-        print(f'testing to see if {self.location.x} {self.location.y} is in a country')
         self.country = WorldBorder.objects.filter(mpoly__contains=self.location).first()
-        print(f'we returned {self.country}')
+
+        # calculate drone path
 
         # update hash
         self.simulated_attribute_hash = self.simulated_attribute_hash()

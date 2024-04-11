@@ -52,11 +52,13 @@
           <tr>
               <th>ID</th>
               <th>Pickup</th>
+              <th>Visualize</th>
           </tr>
           {% for pickup in order.pickups.all %}
               <tr>
                 <td hx-get="{% url 'order_dashboard_delivery_partial' pickup.id %}" hx-target="#dashboard-deliveries" hx-trigger="click">{{ pickup.id }}</td>
                 <td><a href="{% url 'pickup_detail' pickup.id %}">{{ pickup }}</a></td>
+                <td><a href="{% url 'pickup_visualize' pickup.id %}">visualize</a></td>
               </tr>
           {% endfor %}
         </table>

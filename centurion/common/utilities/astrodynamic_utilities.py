@@ -1,9 +1,12 @@
 from math import atan2, asin, acos, sin, cos, sqrt
+from geospatial_utilities import intermediate_point
 import datetime
 
 RADIUS_EARTH_NM = 3443.92
 DEGREES_TO_RADIANS = .01745
 E2 = 0.00669437999014
+DRONE_FLIGHT_ALTITUDE_NM = 5
+DRONE_ASCENSION_DESCENSION_SECONDS=60
 
 # From Converting between ECEF and Geodetic coordinates, D. Rose - November 2014
 def convert_ECEF_to_geodetic(r1):
@@ -74,3 +77,31 @@ def greenwich_sidereal_time(datetime_to_convert):
 
     # finish up
     return (theta_g0 + 360.98564724 * ut_dec) % 360
+
+
+def generate_drone_seperation_point_and_time(start_point, end_point, end_timedelta):
+    
+    # check on valid entries
+    if end_timedelta.total_seconds()<=DRONE_ASCENSION_DESCENSION_SECONDS: # 60 seconds needed to ascend and descend
+        return None, None
+    if start_point == end_point:
+        return None, None
+    
+    # calc flight duration
+    flight_duration_seconds = end_timedelta.total_seconds()
+
+    # seperation happens at 1/3 path (after boost phase)
+    seperation_timedelta = datetime.timedelta(seconds=(flight_duration_seconds-DRONE_ASCENSION_DESCENSION_SECONDS)/3+DRONE_ASCENSION_DESCENSION_SECONDS/2)
+
+    # calculate new point
+    fraction = seperation_timedelta.total_seconds()/flight_duration_seconds
+    return_point = intermediate_point(start_point, end_point, fraction)
+
+    # return
+    return return_point, seperation_timedelta
+
+    
+def generate_drone_path(start_point, start_time, end_point, end_time):
+    pass
+    
+    

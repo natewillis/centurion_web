@@ -1,7 +1,9 @@
 from django.test import TestCase
 from scenarios.models import Scenario, Order, Pickup, Delivery
+from django.contrib.gis.geos import GEOSGeometry
 from .utilities.general_utilities import get_all_related_objects
 from .utilities.astrodynamic_utilities import convert_ECEF_to_geodetic, convert_geodetic_to_ECEF, greenwich_sidereal_time
+from .utilities.geospatial_utilities import great_circle_distance, intermediate_point
 import datetime
 
 class GetAllRelatedObjectsTestCase(TestCase):
@@ -63,3 +65,18 @@ class GreenwichSiderealTimeTestCase(TestCase):
         time_to_convert = datetime.datetime(year=2004, month=3, day=3, hour=4, minute=30)
         converted_time = greenwich_sidereal_time(time_to_convert)
         self.assertAlmostEqual(converted_time, 228.79354,3)
+
+class GreatCircleDistanceTestCase(TestCase):
+    def test_great_circle_distance(self):
+        point1 = GEOSGeometry('POINT(-73.985656 40.748433)', srid=4326)  # Empire State Building
+        point2 = GEOSGeometry('POINT(-74.044500 40.689247)', srid=4326)  # Statue of Liberty
+        great_circle_distance_return = great_circle_distance(point1, point2)  # Distance in nautical miles
+        self.assertAlmostEqual(great_circle_distance_return, 4.45, 3)
+
+class IntermediatePointTestCase(TestCase):
+    def test_intermediate_point(self):
+        point1 = GEOSGeometry('POINT(-5 50)', srid=4326)  # Empire State Building
+        point2 = GEOSGeometry('POINT(-3 58)', srid=4326)  # Statue of Liberty
+        return_point = intermediate_point(point1, point2, 0.5)  # Distance in nautical miles
+        self.assertAlmostEqual(return_point.x, -4.09638889, 3)
+        self.assertAlmostEqual(return_point.y, 54.00416667, 3)
