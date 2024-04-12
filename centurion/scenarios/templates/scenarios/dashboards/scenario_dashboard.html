@@ -54,9 +54,13 @@
         <table>
             <tr>
                 <th>Order Name</th>
+                <th>Visualize</th>
             </tr>
             {% for order in scenario.orders.all %}
-                <tr><td><a href="{% url 'order_dashboard' order.id %}">{{ order.name }}</a></td></tr>
+                <tr>
+                  <td><a href="{% url 'order_dashboard' order.id %}">{{ order.name }}</a></td>
+                  <td><a href="{% url 'order_visualize' order.id %}">visualize</a></td>
+                </tr>
             {% endfor %}
         </table>
     </div>

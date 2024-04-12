@@ -106,26 +106,34 @@ def generate_drone_path(start_point, start_altitude, end_points, end_altitudes, 
 
     # initialize return paths
     return_paths = []
+
+    # validate end points
+    if len(end_points) <= 0:
+        return return_paths
+
     print(f'start point in generate drone path is {start_point} and end points are {end_points}')
     # generate single first path to seperation point
     seperation_end_point = end_points[0]
     seperation_end_point_time_delta = end_timedeltas[0]
-    seperation_point, seperation_timedelta = generate_drone_seperation_point_and_timedelta(start_point, seperation_end_point, seperation_end_point_time_delta)
-    first_path = [
-        (start_point, start_altitude, datetime.timedelta(seconds=0)),
-        (start_point, DRONE_FLIGHT_ALTITUDE_NM, datetime.timedelta(seconds=DRONE_ASCENSION_DESCENSION_SECONDS/2)),
-        (seperation_point, DRONE_FLIGHT_ALTITUDE_NM, seperation_timedelta)
-    ]
-    return_paths.append(first_path)
+
+    if seperation_end_point != start_point and seperation_end_point_time_delta.total_seconds() > DRONE_ASCENSION_DESCENSION_SECONDS:
+        seperation_point, seperation_timedelta = generate_drone_seperation_point_and_timedelta(start_point, seperation_end_point, seperation_end_point_time_delta)
+        first_path = [
+            (start_point, start_altitude, datetime.timedelta(seconds=0)),
+            (start_point, DRONE_FLIGHT_ALTITUDE_NM, datetime.timedelta(seconds=DRONE_ASCENSION_DESCENSION_SECONDS/2)),
+            (seperation_point, DRONE_FLIGHT_ALTITUDE_NM, seperation_timedelta)
+        ]
+        return_paths.append(first_path)
 
     # generate MIRV paths
     for end_point, end_altitude, end_timedelta in zip(end_points, end_altitudes, end_timedeltas):
-        new_path = [
-            (seperation_point, DRONE_FLIGHT_ALTITUDE_NM, seperation_timedelta),
-            (end_point, DRONE_FLIGHT_ALTITUDE_NM, end_timedelta-datetime.timedelta(seconds=DRONE_ASCENSION_DESCENSION_SECONDS/2)),
-            (end_point, end_altitude, end_timedelta),
-        ]
-        return_paths.append(new_path)
+        if start_point != end_point and end_timedelta.total_seconds() > DRONE_ASCENSION_DESCENSION_SECONDS:
+            new_path = [
+                (seperation_point, DRONE_FLIGHT_ALTITUDE_NM, seperation_timedelta),
+                (end_point, DRONE_FLIGHT_ALTITUDE_NM, end_timedelta-datetime.timedelta(seconds=DRONE_ASCENSION_DESCENSION_SECONDS/2)),
+                (end_point, end_altitude, end_timedelta),
+            ]
+            return_paths.append(new_path)
 
     # return constructed paths
     print(f'return paths in generate drone path is {return_paths}')

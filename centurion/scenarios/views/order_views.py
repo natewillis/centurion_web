@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 from ..models import Order, Scenario
 
 
@@ -38,3 +39,13 @@ class OrderDeleteView(DeleteView):
     model = Order
     template_name = 'scenarios/order/order_confirm_delete.html'
     success_url = reverse_lazy('order_list')
+
+def visualize_order(request, pk):
+    order = Order.objects.get(pk=pk)
+    context = {'order': order}
+    return render(request, 'scenarios/order/order_visualize.html', context)
+
+def visualize_order_czml(request, pk):
+    order = Order.objects.get(pk=pk)
+    data = order.generate_visualization_czml().to_json()
+    return JsonResponse(data, safe=False)

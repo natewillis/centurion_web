@@ -51,8 +51,8 @@ class Pickup(models.Model):
             return self.deliveries.earliest('id')
         except Pickup.DoesNotExist:
             return None
-
-    def generate_visualization_czml(self):
+        
+    def generate_drone_flight_paths(self):
 
         # create end_point lists
         end_points = []
@@ -67,9 +67,13 @@ class Pickup(models.Model):
         print(f'flight path location is {self.location}')
         flight_paths = generate_drone_path(self.location, self.altitude_ft/FEET_PER_NAUTICAL_MILE, end_points, end_altitudes, end_timedeltas)
 
+        return flight_paths
+
+    def generate_visualization_czml(self):
+
         # create czml document
         czml_document = CZMLDocument(self.datetime(), self.datetime() + datetime.timedelta(hours=2))
-        czml_document.add_flight_path_packets(static('common/models/drone.gltf'), self.datetime(), flight_paths)
+        czml_document.add_flight_path_packets(static('common/models/drone.gltf'), self.datetime(), self.generate_drone_flight_paths())
 
         # return document
         return czml_document
