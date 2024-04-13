@@ -12,6 +12,13 @@
 {% endblock %}
 
 {% block content %}
+<h2>Order {{ order.id }}</h2>
+<h3>Order Links</h3>
+<ul>
+    <li><a href="{% url "scenario_dashboard" order.scenario.id%}">Scenario Dashboard</a></li>
+    <li><a href="{% url "order_dashboard" order.id%}">Order Dashboard</a></li>
+    <li><a href="{% url "order_update" order.id%}">Edit Order</a></li>
+</ul>
 <div id="cesiumContainer"></div>
 <script type="module">
 
