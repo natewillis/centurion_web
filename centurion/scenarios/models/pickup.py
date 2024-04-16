@@ -32,6 +32,7 @@ class Pickup(ScenarioModel):
     def simulated_attribute_hash(self):
         return calculate_hash(' '.join([
             f'{PICKUP_GENERATE_ATTRIBUTE_VERSION}',
+            f'{self.offset.total_seconds()}',
             f'{self.location.x:.2f}',
             f'{self.location.y:.2f}',
             ]))

@@ -28,6 +28,7 @@ class Delivery(ScenarioModel):
     def simulated_attribute_hash(self):
         return calculate_hash(' '.join([
             f'{DELIVERY_GENERATE_ATTRIBUTE_VERSION}',
+            f'{self.offset.total_seconds()}',
             f'{self.location.x:.2f}',
             f'{self.location.y:.2f}',
             ]))
