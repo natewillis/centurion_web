@@ -4,10 +4,12 @@ from datetime import timedelta
 from common.utilities.general_utilities import calculate_hash
 from .pickup import Pickup
 from support.models import WorldBorder
+from ..models.scenario_model import ScenarioModel
+
 
 DELIVERY_GENERATE_ATTRIBUTE_VERSION=1
 
-class Delivery(models.Model):
+class Delivery(ScenarioModel):
     weight = models.IntegerField(blank=False, null=False, default=0)
     pickup = models.ForeignKey(Pickup, on_delete=models.CASCADE, related_name='deliveries')
     offset = models.DurationField(blank=False, null=False, default=timedelta)
@@ -38,4 +40,4 @@ class Delivery(models.Model):
         print(f'we returned {self.country}')
 
         # update hash
-        self.simulated_attribute_hash = self.simulated_attribute_hash()
+        self.saved_simulated_attribute_hash = self.simulated_attribute_hash()

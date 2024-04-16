@@ -5,6 +5,8 @@
     <p>Weight: {{ object.weight }}</p>
     <p>Location (ft): {{ object.location.x }} {{ object.location.y }}</p>
     <p>Altitude (ft): {{ object.altitude_ft }}</p>
+    <p>Country: {{object.country.name}}</p>
+    <p>Attribute Hash: {{object.saved_simulated_attribute_hash}}</p>
     <p>Pickup: {{ object.pickup }}</p>
     <a href="{% url 'delivery_update' object.pk %}">Edit</a>
     <a href="{% url 'delivery_delete' object.pk %}">Delete</a>

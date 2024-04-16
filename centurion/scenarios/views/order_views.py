@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from ..models import Order, Scenario
+from ..mixins import SaveAndSimulateMixin
 
 
 class OrderListView(ListView):

@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404
 from ..models import Delivery, Pickup
+from ..mixins import SaveAndSimulateMixin
 
 
 class DeliveryListView(ListView):
@@ -14,7 +15,7 @@ class DeliveryDetailView(DetailView):
     template_name = 'scenarios/delivery/delivery_detail.html'
 
 
-class DeliveryCreateView(CreateView):
+class DeliveryCreateView(SaveAndSimulateMixin, CreateView):
     model = Delivery
     template_name = 'scenarios/delivery/delivery_form.html'
     fields = ['weight', 'pickup', 'offset', 'location', 'altitude_ft']
@@ -30,7 +31,7 @@ class DeliveryCreateView(CreateView):
     def get_success_url(self):
         return reverse('delivery_detail', kwargs={'pk': self.object.pk})
 
-class DeliveryUpdateView(UpdateView):
+class DeliveryUpdateView(SaveAndSimulateMixin, UpdateView):
     model = Delivery
     template_name = 'scenarios/delivery/delivery_form.html'
     fields = ['weight', 'pickup', 'offset', 'location', 'altitude_ft']

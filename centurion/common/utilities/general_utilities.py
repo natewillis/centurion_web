@@ -2,7 +2,6 @@
 
 # Imports for hashes
 from ctypes import c_uint64
-from base64 import urlsafe_b64encode
 # Imports for get_all_related_objects
 from django.db.models.fields.related import ForeignObjectRel
 # imports for get_parent_instance
@@ -80,44 +79,40 @@ def get_all_related_objects(instance, models_to_ignore = []):
     return related_objects
 
 
-def get_parent_instance(child_instance, parent_model_name):
+def get_parent_instance(child_instance, parent_model_name, visited=None):
     """
     Recursively follows foreign key relationships from a child instance to find an instance of the specified parent model.
     
     :param child_instance: The child model instance from which to start.
     :param parent_model_name: The name of the parent model class to find (expected to be the model class name).
+    :param visited: Set of visited instances to avoid loops in recursive relationships.
     :return: The parent model instance if found, or None if no such parent exists.
     """
-    current_instance = child_instance
-    visited = set()  # To avoid loops in recursive relationships
+    if visited is None:
+        visited = set()
 
-    while current_instance:
+    # Avoid revisiting the same instance in case of circular relationships
+    if child_instance in visited:
+        return None
+    visited.add(child_instance)
 
-        # Avoid revisiting the same instance in case of circular relationships
-        if current_instance in visited:
-            break
-        visited.add(current_instance)
+    # Check if the current instance is of the type we're looking for
+    if child_instance.__class__.__name__.lower() == parent_model_name.lower():
+        return child_instance
+    
+    # Iterate over all foreign key fields to explore possible parent paths
+    for field in child_instance._meta.fields:
+        if isinstance(field, models.ForeignKey):
+            try:
+                # Fetch the related object
+                related_instance = getattr(child_instance, field.name)
+                if related_instance:
+                    # Recursively search for the parent model from the related instance
+                    found_instance = get_parent_instance(related_instance, parent_model_name, visited)
+                    if found_instance:
+                        return found_instance
+            except FieldDoesNotExist:
+                continue
 
-        # Check if the current instance is of the type we're looking for
-        if current_instance.__class__.__name__.lower() == parent_model_name.lower():
-            return current_instance
-        
-        # Move up to the next related object if possible
-        new_instance = None
-        for field in current_instance._meta.fields:
-            if isinstance(field, models.ForeignKey):
-                try:
-                    # Try to fetch the related object
-                    new_instance = getattr(current_instance, field.name)
-                    break
-                except FieldDoesNotExist:
-                    continue
-        
-        if new_instance is None:
-            # No more foreign keys, stop the search
-            return None
-        
-        # Update the current instance to the newly found related object
-        current_instance = new_instance
-
+    # If no parent model found through any paths, return None
     return None

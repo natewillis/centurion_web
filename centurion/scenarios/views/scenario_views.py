@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from ..models import Scenario
+from ..mixins import SaveAndSimulateMixin
 
 class ScenarioListView(ListView):
     model = Scenario
@@ -13,13 +14,13 @@ class ScenarioDetailView(DetailView):
     template_name = 'scenarios/scenario/scenario_detail.html'
 
 
-class ScenarioCreateView(CreateView):
+class ScenarioCreateView(SaveAndSimulateMixin, CreateView):
     model = Scenario
     template_name = 'scenarios/scenario/scenario_form.html'
     fields = ['name', 'exercise_start_datetime']
     success_url = reverse_lazy('scenario_list')
 
-class ScenarioUpdateView(UpdateView):
+class ScenarioUpdateView(SaveAndSimulateMixin, UpdateView):
     model = Scenario
     template_name = 'scenarios/scenario/scenario_form.html'
     fields = ['name', 'exercise_start_datetime']

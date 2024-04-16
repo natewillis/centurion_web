@@ -3,9 +3,10 @@ from datetime import timedelta
 from django.templatetags.static import static
 from common.utilities.cesium_utilities import CZMLDocument
 from .scenario import Scenario 
+from ..models.scenario_model import ScenarioModel
 import datetime
 
-class Order(models.Model):
+class Order(ScenarioModel):
     name = models.CharField(max_length=100, default="Unnamed Order")
     scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name='orders')
     offset = models.DurationField(blank=False, null=False, default = timedelta)

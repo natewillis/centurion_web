@@ -7,12 +7,13 @@ from common.utilities.general_utilities import calculate_hash
 from common.utilities.astrodynamic_utilities import generate_drone_path, generate_drone_seperation_point_and_timedelta
 from common.utilities.cesium_utilities import Packet, CZMLDocument
 from support.models import Box, WorldBorder
+from ..models.scenario_model import ScenarioModel
 import datetime
 
 PICKUP_GENERATE_ATTRIBUTE_VERSION=1
 FEET_PER_NAUTICAL_MILE = 6076
 
-class Pickup(models.Model):
+class Pickup(ScenarioModel):
     box = models.ForeignKey(Box, on_delete=models.CASCADE, default=Box.get_default_pk)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='pickups')
     offset = models.DurationField(blank=False, null=False, default=timedelta)
@@ -43,7 +44,7 @@ class Pickup(models.Model):
         # calculate drone path
 
         # update hash
-        self.simulated_attribute_hash = self.simulated_attribute_hash()
+        self.saved_simulated_attribute_hash = self.simulated_attribute_hash()
 
 
     def key_impact(self):

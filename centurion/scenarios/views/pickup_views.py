@@ -3,6 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from ..models import Pickup, Order
+from ..mixins import SaveAndSimulateMixin
 
 class PickupListView(ListView):
     model = Pickup
@@ -14,7 +15,7 @@ class PickupDetailView(DetailView):
     template_name = 'scenarios/pickup/pickup_detail.html'
 
 
-class PickupCreateView(CreateView):
+class PickupCreateView(SaveAndSimulateMixin, CreateView):
     model = Pickup
     template_name = 'scenarios/pickup/pickup_form.html'
     fields = ['box', 'order', 'offset', 'location', 'altitude_ft']
@@ -30,7 +31,7 @@ class PickupCreateView(CreateView):
         return reverse('pickup_detail', kwargs={'pk': self.object.pk})
 
 
-class PickupUpdateView(UpdateView):
+class PickupUpdateView(SaveAndSimulateMixin, UpdateView):
     model = Pickup
     template_name = 'scenarios/pickup/pickup_form.html'
     fields = ['box', 'order', 'offset', 'location', 'altitude_ft']
