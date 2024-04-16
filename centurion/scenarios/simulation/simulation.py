@@ -1,11 +1,11 @@
 from collections import defaultdict
 from datetime import datetime
-from common.utilities.general_utilities import get_all_related_objects
+from common.utilities.general_utilities import get_all_related_objects, get_parent_instance
 from .simulate_pickups import simulate_pickups
 from .simulate_deliveries import simulate_deliveries
 
 
-def simulate_scenario(scenario):
+def simulate_scenario(scenario_model_instance):
     
     # TODO: gather data from cache
     # TODO: summarize orders so we can directly put data in the dashboard without queries
@@ -16,6 +16,8 @@ def simulate_scenario(scenario):
         'changed_instances': {}
     }
 
+    # find the scenario, you could be passing in a child instance
+    scenario = get_parent_instance(scenario_model_instance, 'Scenario')
     
     # Get all related objects
     scenario_objects = get_all_related_objects(scenario)

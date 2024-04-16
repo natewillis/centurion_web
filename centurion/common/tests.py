@@ -28,10 +28,12 @@ class GetAllRelatedObjectsTestCase(TestCase):
 
     def test_get_all_related_objects(self):
         related_objects = get_all_related_objects(self.scenario)
+        print(related_objects)
         self.assertIn(self.order, related_objects)
         self.assertIn(self.pickup, related_objects)
         self.assertIn(self.delivery, related_objects)
         self.assertNotIn(self.scenario, related_objects)
+        self.assertEqual(len(related_objects), 3)
 
 class ECEFtoGeodeticConversionsTestCase(TestCase):
     def setUp(self):
