@@ -1,9 +1,12 @@
 from collections import defaultdict
 from datetime import datetime
+import logging
 from common.utilities.general_utilities import get_all_related_objects, get_parent_instance
 from .simulate_pickups import simulate_pickups
 from .simulate_deliveries import simulate_deliveries
 
+# create logger
+logger = logging.getLogger(__name__)
 
 def simulate_scenario(scenario_model_instance):
     
@@ -59,6 +62,6 @@ def simulate_scenario(scenario_model_instance):
     for model_key in simulation_data['changed_instances']:
         for instance in simulation_data['changed_instances'][model_key]:
             instance.save()
-            print(f'we saved {instance}')
+            logger.debug(f'we saved {instance}')
 
-    print('simulation complete!')
+    logger.debug('simulation complete!')
