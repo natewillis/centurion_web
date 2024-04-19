@@ -61,7 +61,12 @@ def simulate_scenario(scenario_model_instance):
     # save objects that changed
     for model_key in simulation_data['changed_instances']:
         for instance in simulation_data['changed_instances'][model_key]:
+            if instance._meta.model.__name__ == "Pickup":
+                print(f'{instance} has country of {instance.country}')
             instance.save()
             logger.debug(f'we saved {instance}')
+            print(f'we saved {instance}')
 
     logger.debug('simulation complete!')
+
+    

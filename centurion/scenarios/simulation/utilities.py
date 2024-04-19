@@ -9,3 +9,4 @@ def add_instance_to_changed_types(instance, simulation_data):
 
     # add instance
     simulation_data['changed_instances'][model_name].append(instance)
+    print(f'added {instance} to changed hash')

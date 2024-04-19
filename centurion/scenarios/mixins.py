@@ -1,4 +1,4 @@
-
+from django.http import HttpResponseRedirect
 
 class SaveAndSimulateMixin:
     def form_valid(self, form):
@@ -13,4 +13,4 @@ class SaveAndSimulateMixin:
         #form.save_m2m()  # Make sure to save many-to-many fields if applicable
 
         # do the normal return
-        return super().form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
