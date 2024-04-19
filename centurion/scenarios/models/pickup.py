@@ -6,11 +6,12 @@ from .order import Order
 from common.utilities.general_utilities import calculate_hash
 from common.utilities.astrodynamic_utilities import generate_drone_path, generate_drone_seperation_point_and_timedelta
 from common.utilities.cesium_utilities import Packet, CZMLDocument
+from support.utilities import get_elevation
 from support.models import Box, WorldBorder
 from ..models.scenario_model import ScenarioModel
 import datetime
 
-PICKUP_GENERATE_ATTRIBUTE_VERSION=1
+PICKUP_GENERATE_ATTRIBUTE_VERSION=2
 FEET_PER_NAUTICAL_MILE = 6076
 
 class Pickup(ScenarioModel):
@@ -19,6 +20,7 @@ class Pickup(ScenarioModel):
     offset = models.DurationField(blank=False, null=False, default=timedelta)
     location = models.PointField(blank=False, null=False, srid=4326, default=Point(-95.9, 41.2))
     altitude_ft = models.FloatField(blank=False, null=False, default=0)
+    calculated_altitude_ft = models.FloatField(blank=False, null=False, default=0)
     country = models.ForeignKey('support.WorldBorder', on_delete=models.CASCADE, null=True, blank=True)
     saved_simulated_attribute_hash = models.CharField(max_length=16,blank=True,null=False)
 
@@ -41,6 +43,9 @@ class Pickup(ScenarioModel):
 
         # calculate country
         self.country = WorldBorder.objects.filter(mpoly__contains=self.location).first()
+
+        # caclulate estimated altitude
+        self.calculated_altitude_ft = get_elevation(self.location.y, self.location.x, meters_flag=False)
 
         # calculate drone path
 

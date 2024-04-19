@@ -3,22 +3,22 @@ from django.contrib.gis.gdal import GDALRaster
 from django.contrib.gis.utils import LayerMapping
 import os
 from pathlib import Path
-from .models import WorldBorder
+from .models import WorldBorder, Elevation
 
-#def import_elevation_data():
-#
-#    data_path =  Path(__file__).resolve().parent.parent.parent / "data" / "low_res_resampled_reprojected_ETOPO.tif"
-#    # import raster
-#    elevation_raster = GDALRaster(data_path, write=True)
-#    print("Raster object created successfully.")
-#    print(f"Raster size: {elevation_raster.width}x{elevation_raster.height}")
-#    print(f"Number of bands: {elevation_raster.bands}")
-#    print(f"SRID: {elevation_raster.srs.srid if elevation_raster.srs else 'None'}")
-#
-#    # Create elevation object
-#    new_elevation_object = Elevation.objects.create(raster=elevation_raster,name="ETOPO 2022")
-#    new_elevation_object.save()
-#    print('import complete!')
+def import_elevation_data():
+
+    data_path =  Path(__file__).resolve().parent.parent.parent / "data" / "low_res_resampled_reprojected_ETOPO.tif"
+    # import raster
+    elevation_raster = GDALRaster(data_path, write=True)
+    print("Raster object created successfully.")
+    print(f"Raster size: {elevation_raster.width}x{elevation_raster.height}")
+    print(f"Number of bands: {elevation_raster.bands}")
+    print(f"SRID: {elevation_raster.srs.srid if elevation_raster.srs else 'None'}")
+
+    # Create elevation object
+    new_elevation_object = Elevation.objects.create(raster=elevation_raster,name="ETOPO 2022")
+    new_elevation_object.save()
+    print('import complete!')
 
 # World Border Import
 world_mapping = {

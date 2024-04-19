@@ -1,9 +1,9 @@
 from django.contrib.gis.db import models
 
 
-#class Elevation(models.Model):
-#    name = models.CharField(max_length=100)
-#    raster = models.RasterField()
+class Elevation(models.Model):
+    name = models.CharField(max_length=100)
+    raster = models.RasterField()
 
 
 class Box(models.Model):
